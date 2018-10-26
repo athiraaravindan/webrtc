@@ -1,0 +1,22 @@
+<!-- <div class="dashboard-card" *ngFor="let _video of videoElements">
+    <div class="dashboard-card-content">
+        <div appMediaElement [stream]="_video.stream" [config]="_video.config" [self]="myId==_video.userid">
+            <video></video>
+        </div>
+      </div>
+      
+  </div>
+  <div *ngFor="let video of videoElements">
+    <p>{{video.extra.fullName}}</p>
+  </div> -->
+  <div class="make-center">
+    <div style="margin: 0; padding: 0; padding-bottom: 20px;">
+        <div class="make-center">
+        <input type="text" id="broadcast-id" value="room-xyz" autocorrect=off autocapitalize=off size=20>
+        <button (click)=buttonClick();>Open or Join Broadcast</button>
+
+        <div class="make-center" id="broadcast-viewers-counter"></div>
+        </div>
+
+    <video id="video-preview" controls loop></video>
+</div>
