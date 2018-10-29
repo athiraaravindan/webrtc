@@ -4518,13 +4518,14 @@ window.RTCMultiConnection = function(roomid, forceOptions,socket) {
 
                 if (isRoomJoined === false) {
                     if (connection.enableLogs) {
-                        console.warn('isRoomJoined: ', error, ' roomid: ', connection.sessionid);
+                        alert('room not available')
+                        // console.warn('isRoomJoined: ', error, ' roomid: ', connection.sessionid);
                     }
 
                     // retry after 3 seconds
-                    setTimeout(function() {
-                        joinRoom(connectionDescription, cb);
-                    }, 3000);
+                    // setTimeout(function() {
+                    //     joinRoom(connectionDescription, cb);
+                    // }, 3000);
                 }
             });
         }

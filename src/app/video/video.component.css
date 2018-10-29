@@ -1,0 +1,24 @@
+video , #videos-container{
+    height: 200px;
+    width: 200px;
+}
+h2 {
+    text-align: center;
+    color: brown;
+}
+
+#div{
+    text-align: center;
+    margin-top: 20px;
+    border: 1px solid brown;
+    padding: 10px;
+    border-radius: 3px;
+}
+#open{
+    margin-left: 100px;
+    margin-top: 50px;
+}
+#join{
+    margin-left: 20px;
+    margin-top: 50px;
+}

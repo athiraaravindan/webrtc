@@ -1,6 +1,6 @@
 declare var RTCMultiConnection;
 import * as io from 'socket.io-client';
-
+import * as $ from 'jquery';
 
 import { Component, OnInit } from '@angular/core';
 
@@ -17,7 +17,9 @@ export class VideoComponent implements OnInit {
   videoPreview:any;
   existing:any;
   video:any;
-
+  disabled:any = false;
+  on:any = true;
+  p:any;
   constructor() { }
 
   ngOnInit() {
@@ -26,7 +28,7 @@ export class VideoComponent implements OnInit {
     this.connection.socketMessageEvent = 'video-conference-demo';
     this.connection.session = {
         audio: true,
-        video: false
+        video: true
     };
     this.connection.sdpConstraints.mandatory = {
         OfferToReceiveAudio: true,
@@ -34,10 +36,8 @@ export class VideoComponent implements OnInit {
     };
     this.connection.videosContainer = document.getElementById('videos-container');
     this.connection.onstream = (event)=> {
-      console.log(event.streamid)
     this.existing = document.getElementById(event.streamid);
       if(this.existing && this.existing.parentNode) {
-        console.log(event.streamid)
         this.existing.parentNode.removeChild(this.existing);
       }
       event.mediaElement.removeAttribute('src');
@@ -49,48 +49,75 @@ export class VideoComponent implements OnInit {
       try {
         this.video.setAttributeNode(document.createAttribute('autoplay'));
         this.video.setAttributeNode(document.createAttribute('playsinline'));
+        this.video.setAttribute(document.createAttribute('height = 200px;'));
+        this.video.setAttribute(document.createAttribute('width = 200px;'));
     } catch (e) {
         this.video.setAttribute('autoplay', true);
         this.video.setAttribute('playsinline', true);
+  
+
     }
-    if(event.type === 'local') {
-      this.video.volume = 0;
-      try {
-          this.video.setAttributeNode(document.createAttribute('muted'));
-      } catch (e) {
-          this.video.setAttribute('muted', true);
+    if(event.stream.type == 'local'){
+      console.log(event)
+      this.videoPreview = document.getElementById('video-preview');
+      this.videoPreview.srcObject = event.stream;
+      this.videoPreview.play();
+    //   setTimeout(function() {
+    //     this.videoPreview.play();
+    // }, 10000);
       }
-    }
-    this.video.srcObject = event.stream;
-    // var width = parseInt(this.connection.videosContainer.clientWidth / 3) - 20;
-    this.connection.videosContainer.appendChild(this.video);
-      // if(event.stream.type == 'local'){
-      // this.videoPreview = document.getElementById('video-preview');
-      // console.log(event)
-      // this.videoPreview.srcObject = event.stream;
-      // this.videoPreview.play();
-      // }
-      // if(event.stream.type == 'remote'){
-      // this.videoPreview = document.getElementById('video-remote');
-      // this.videoPreview.srcObject = event.stream;
-      // this.videoPreview.play(); 
-      // }
+      if(event.stream.type == 'remote'){
+        
+        this.video.srcObject = event.stream;
+        this.connection.videosContainer.appendChild(this.video);
+        // setTimeout(function() {
+          this.videoPreview.play();
+      // }, 10000);
+  
+      }
+     
     }
 }
 openRoom(){
-this.connection.open((<HTMLInputElement>document.getElementById('room-id')).value);
+  this.on = false;
+  // (<HTMLInputElement>document.getElementById('open')).disabled = true;
 
+this.connection.open((<HTMLInputElement>document.getElementById('room-id')).value,
+(isRoomOpened, roomid, error) =>{
+  if(isRoomOpened === true) {
+    alert('you are join in the room'  +roomid)
+    // console.log('room open room-id',roomid);
+  }
+  else{
+    console.log('error')
+  }
+});
 }
 joinRoom(){
-  this.connection.join((<HTMLInputElement>document.getElementById('room-id')).value);
-}
-open_or_join(){
-  this.connection.openOrJoin((<HTMLInputElement>document.getElementById('room-id')).value, function(isRoomExists, roomid) {
-    if (!isRoomExists){
-      // this.showRoomURL(roomid);
-    }
-});
+  this.on = false;
 
-  }
+  // (<HTMLInputElement>document.getElementById('join')).disabled = true;
+
+  this.connection.join((<HTMLInputElement>document.getElementById('room-id')).value);
+ 
+ 
+
+}
+// open_or_join(){
+  // this.disableInputButtons();
+
+  // this.connection.openOrJoin((<HTMLInputElement>document.getElementById('room-id')).value, function(isRoomExists, roomid) {
+    // if (!isRoomExists){
+    //   // this.showRoomURL(roomid);
+    // }
+// });
+
+//   }
+  disableInputButtons() {
+    // (<HTMLInputElement>document.getElementById('openjoin')).disabled = true;
+    (<HTMLInputElement>document.getElementById('open')).disabled = true;
+    (<HTMLInputElement>document.getElementById('join')).disabled = true;
+    (<HTMLInputElement>document.getElementById('room-id')).disabled = true;
+}
 
 }
