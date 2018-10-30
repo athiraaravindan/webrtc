@@ -1,26 +1,19 @@
-<h2>Video Conferencing</h2>
-<div class="container">
-  <div class="row">
-    <div class="col-md-3"></div>
-    <div class="col-md-5" id="div" *ngIf="on == true">
-      Enter your Room Name:
-      <input type="text" id="room-id"  autocorrect=off autocapitalize=off 
-      size=20 autofocus>
-      <button id="open" class="btn btn-info" (click)="openRoom()">Open Room</button>
-      <button id="join" class="btn btn-success" (click)="joinRoom()">Join Room</button>
+<div class="body">
+  <h2>Video Conferencing</h2>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <video id="video-preview" controls *ngIf="on == false"></video>
+      </div>
+      <div class="col-md-4" id="div" *ngIf="on == true">
+        Enter your Room Name:
+        <input type="text" id="room-id" autocorrect=off autocapitalize=off size=20 autofocus="true">
+        <button id="open" class="btn btn-info" (click)="openRoom()">Open Room</button>
+        <button id="join" class="btn btn-success" (click)="joinRoom()">Join Room</button>
+      </div>
+      <div class="col-md-4">
+        <div id="videos-container"></div>
+      </div>
     </div>
-     <video id="video-preview"></video>
-    <div class="col-md-4"></div>
-
-  </div>
-  <div class="row">
-      <div id="videos-container"></div>
   </div>
 </div>
-  <!-- <div id="div" *ngIf="on == true"> -->
-    <!-- <input type="text" id="room-id" placeholder="enter_room_name" autocorrect=off autocapitalize=off size=20> -->
-    <!-- <button id="open" (click)="openRoom()">Open Room</button> -->
-    <!-- <button id="join" (click)="joinRoom()">Join Room</button> -->
-    <!-- <button (click)="open_or_join()">Auto Open Or Join Room</button> -->
-  <!-- </div> -->
- 

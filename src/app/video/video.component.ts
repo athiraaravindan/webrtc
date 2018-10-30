@@ -20,30 +20,28 @@ export class VideoComponent implements OnInit {
   disabled:any = false;
   on:any = true;
   p:any;
+  width:any;
+  newP:any;
+  newContent:any;
   constructor() { }
 
   ngOnInit() {
     this.connection = new RTCMultiConnection('my-room',{},io);
-    this.connection.socketURL =  "http://localhost:9001/";
+    this.connection.socketURL =  'https://rtcmulticonnection.herokuapp.com:443/';
     this.connection.socketMessageEvent = 'video-conference-demo';
     this.connection.session = {
         audio: true,
         video: true
     };
+  
     this.connection.sdpConstraints.mandatory = {
         OfferToReceiveAudio: true,
         OfferToReceiveVideo: true
     };
     this.connection.videosContainer = document.getElementById('videos-container');
     this.connection.onstream = (event)=> {
-    this.existing = document.getElementById(event.streamid);
-      if(this.existing && this.existing.parentNode) {
-        this.existing.parentNode.removeChild(this.existing);
-      }
-      event.mediaElement.removeAttribute('src');
-      event.mediaElement.removeAttribute('srcObject');
-      event.mediaElement.muted = true;
-      event.mediaElement.volume = 0;
+  
+   
 
       this.video = document.createElement('video');
       try {
@@ -51,9 +49,12 @@ export class VideoComponent implements OnInit {
         this.video.setAttributeNode(document.createAttribute('playsinline'));
         this.video.setAttribute(document.createAttribute('height = 200px;'));
         this.video.setAttribute(document.createAttribute('width = 200px;'));
+        this.video.setAttributeNode(document.createAttribute('controls'));
+
     } catch (e) {
         this.video.setAttribute('autoplay', true);
         this.video.setAttribute('playsinline', true);
+        this.video.setAttribute('controls',true)
   
 
     }
@@ -71,7 +72,7 @@ export class VideoComponent implements OnInit {
         this.video.srcObject = event.stream;
         this.connection.videosContainer.appendChild(this.video);
         // setTimeout(function() {
-          this.videoPreview.play();
+          this.video.play();
       // }, 10000);
   
       }
@@ -81,43 +82,29 @@ export class VideoComponent implements OnInit {
 openRoom(){
   this.on = false;
   // (<HTMLInputElement>document.getElementById('open')).disabled = true;
-
-this.connection.open((<HTMLInputElement>document.getElementById('room-id')).value,
-(isRoomOpened, roomid, error) =>{
-  if(isRoomOpened === true) {
-    alert('you are join in the room'  +roomid)
-    // console.log('room open room-id',roomid);
-  }
-  else{
-    console.log('error')
-  }
-});
+  this.connection.open((<HTMLInputElement>document.getElementById('room-id')).value,
+    (isRoomOpened, roomid, error) =>{
+      if(isRoomOpened === true) {
+        this.newP = document.createElement("p");
+        this.newContent = document.createTextNode("You are Created a Room  "+roomid); 
+        // alert('you are open a room  '+roomid)
+        this.newP.appendChild(this.newContent);
+      }
+      else{
+        console.log('error')
+      }
+    });
 }
 joinRoom(){
   this.on = false;
-
-  // (<HTMLInputElement>document.getElementById('join')).disabled = true;
-
   this.connection.join((<HTMLInputElement>document.getElementById('room-id')).value);
- 
- 
+  }
 
-}
-// open_or_join(){
-  // this.disableInputButtons();
-
-  // this.connection.openOrJoin((<HTMLInputElement>document.getElementById('room-id')).value, function(isRoomExists, roomid) {
-    // if (!isRoomExists){
-    //   // this.showRoomURL(roomid);
-    // }
-// });
-
-//   }
-  disableInputButtons() {
-    // (<HTMLInputElement>document.getElementById('openjoin')).disabled = true;
-    (<HTMLInputElement>document.getElementById('open')).disabled = true;
-    (<HTMLInputElement>document.getElementById('join')).disabled = true;
-    (<HTMLInputElement>document.getElementById('room-id')).disabled = true;
-}
+//   disableInputButtons() {
+//     // (<HTMLInputElement>document.getElementById('openjoin')).disabled = true;
+//     (<HTMLInputElement>document.getElementById('open')).disabled = true;
+//     (<HTMLInputElement>document.getElementById('join')).disabled = true;
+//     (<HTMLInputElement>document.getElementById('room-id')).disabled = true;
+// }
 
 }

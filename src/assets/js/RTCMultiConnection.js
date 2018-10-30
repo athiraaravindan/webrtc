@@ -261,19 +261,19 @@ window.RTCMultiConnection = function(roomid, forceOptions,socket) {
                 console.info('socket.io connection is opened.');
             }
 
-            setTimeout(function() {
+            // setTimeout(function() {
                 connection.socket.emit('extra-data-updated', connection.extra);
 
                 if (connectCallback) {
                     connectCallback(connection.socket);
                 }
-            }, 1000);
+            // }, 1000);
         });
 
         connection.socket.on('disconnect', function() {
-            if (connection.enableLogs) {
-                console.warn('socket.io connection is closed');
-            }
+            // if (connection.enableLogs) {
+            //     console.warn('socket.io connection is closed');
+            // }
         });
 
         connection.socket.on('join-with-password', function(remoteUserId) {
@@ -529,22 +529,22 @@ window.RTCMultiConnection = function(roomid, forceOptions,socket) {
                 onRemoteStreamRemoved: function(stream) {
                     self.onRemovingRemoteMedia(stream, remoteUserId);
                 },
-                onPeerStateChanged: function(states) {
-                    self.onPeerStateChanged(states);
+                // onPeerStateChanged: function(states) {
+                //     self.onPeerStateChanged(states);
 
-                    if (states.iceConnectionState === 'new') {
-                        self.onNegotiationStarted(remoteUserId, states);
-                    }
+                //     if (states.iceConnectionState === 'new') {
+                //         self.onNegotiationStarted(remoteUserId, states);
+                //     }
 
-                    if (states.iceConnectionState === 'connected') {
-                        self.onNegotiationCompleted(remoteUserId, states);
-                    }
+                //     if (states.iceConnectionState === 'connected') {
+                //         self.onNegotiationCompleted(remoteUserId, states);
+                //     }
 
-                    if (states.iceConnectionState.search(/closed|failed/gi) !== -1) {
-                        self.onUserLeft(remoteUserId);
-                        self.disconnectWith(remoteUserId);
-                    }
-                }
+                //     if (states.iceConnectionState.search(/closed|failed/gi) !== -1) {
+                //         self.onUserLeft(remoteUserId);
+                //         self.disconnectWith(remoteUserId);
+                //     }
+                // }
             };
         };
 
@@ -799,9 +799,9 @@ window.RTCMultiConnection = function(roomid, forceOptions,socket) {
             });
         };
 
-        this.onPeerStateChanged = function(state) {
-            connection.onPeerStateChanged(state);
-        };
+        // this.onPeerStateChanged = function(state) {
+        //     connection.onPeerStateChanged(state);
+        // };
 
         this.onNegotiationStarted = function(remoteUserId, states) {};
         this.onNegotiationCompleted = function(remoteUserId, states) {};
@@ -2545,25 +2545,25 @@ window.RTCMultiConnection = function(roomid, forceOptions,socket) {
                 return;
             }
 
-            config.onPeerStateChanged({
-                iceConnectionState: peer.iceConnectionState,
-                iceGatheringState: peer.iceGatheringState,
-                signalingState: peer.signalingState,
-                extra: extra,
-                userid: self.userid
-            });
+            // config.onPeerStateChanged({
+            //     iceConnectionState: peer.iceConnectionState,
+            //     iceGatheringState: peer.iceGatheringState,
+            //     signalingState: peer.signalingState,
+            //     extra: extra,
+            //     userid: self.userid
+            // });
 
-            if (peer && peer.iceConnectionState && peer.iceConnectionState.search(/closed|failed/gi) !== -1 && self.streams instanceof Array) {
-                self.streams.forEach(function(stream) {
-                    var streamEvent = connection.streamEvents[stream.id] || {
-                        streamid: stream.id,
-                        stream: stream,
-                        type: 'remote'
-                    };
+            // if (peer && peer.iceConnectionState && peer.iceConnectionState.search(/closed|failed/gi) !== -1 && self.streams instanceof Array) {
+            //     self.streams.forEach(function(stream) {
+            //         var streamEvent = connection.streamEvents[stream.id] || {
+            //             streamid: stream.id,
+            //             stream: stream,
+            //             type: 'remote'
+            //         };
 
-                    connection.onstreamended(streamEvent);
-                });
-            }
+            //         connection.onstreamended(streamEvent);
+            //     });
+            // }
         };
 
         var sdpConstraints = {
@@ -5832,13 +5832,13 @@ window.RTCMultiConnection = function(roomid, forceOptions,socket) {
             return screen_constraints;
         };
 
-        connection.onPeerStateChanged = function(state) {
-            if (connection.enableLogs) {
-                if (state.iceConnectionState.search(/closed|failed/gi) !== -1) {
-                    console.error('Peer connection is closed between you & ', state.userid, state.extra, 'state:', state.iceConnectionState);
-                }
-            }
-        };
+        // connection.onPeerStateChanged = function(state) {
+        //     if (connection.enableLogs) {
+        //         if (state.iceConnectionState.search(/closed|failed/gi) !== -1) {
+        //             console.error('Peer connection is closed between you & ', state.userid, state.extra, 'state:', state.iceConnectionState);
+        //         }
+        //     }
+        // };
 
         connection.isOnline = true;
 
@@ -5902,6 +5902,7 @@ window.RTCMultiConnection = function(roomid, forceOptions,socket) {
 
         connection.onRoomFull = function(roomid) {
             if (connection.enableLogs) {
+                alert('your Room  '+roomid +' is full')
                 console.warn(roomid, 'is full.');
             }
         };
